@@ -10,6 +10,13 @@ body {
   background-color: #fafafa;
   color: #212121;
   line-height: 1.5;
+  font-size: 15px;
+  line-height: 30px;
+}
+
+a {
+  text-decoration: none;
+  color: #212121;
 }
 
 #search-box {
@@ -19,42 +26,107 @@ body {
   margin-bottom: 16px;
 }
 
-ul {
-  list-style: none;
-}
-
-li {
-  display: flex;
-  align-items: center;
-}
-
-.country {
-  margin-left: 15px;
-}
-
-.wrapper-name-country {
-  display: flex;
-  align-items: center;
-}
-
-.info-list {
-  font-style: normal;
-  font-weight: 700;
-  font-size: 22px;
-  line-height: 28px;
-
-}
-
-.info-item {
-  margin-bottom: 30px;
-}
-
-span {
-  font-weight: 500;
-}
-
 .is-hidden {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
+}
+
+.search-section {
+  width: 100vw;
+  background-color: #2196f3;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+}
+
+input {
+  width: 300px;
+  height: 35px;
+  border-radius: 4px;
+}
+
+.gallery-section {
+  padding: 30px 0;
+}
+
+.container {
+  max-width: 1200px;
+  padding-left: 30px;
+  padding-right: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+
+}
+
+/* .photo-card */
+.gallery a {
+  width: calc((100% - 45px) / 4);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 2px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+
+
+}
+
+.photo-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.photo-card img {
+  height: 80%;
+  width: 100%;
+  object-fit: cover;
+}
+
+
+.info {
+  display: flex;
+  gap: 5px;
+  justify-content: space-between;
+  padding: 20px 5px;
+
+  flex-grow: 1;
+}
+
+.info p {
+  display: block;
+  text-align: center;
+}
+
+button {
+  border-radius: 4px;
+}
+
+.load-more {
+  display: block;
+  width: 150px;
+  height: 35px;
+  margin: 0 auto;
+
+}
+
+button:hover,
+button:focus {
+  color: #ffffff;
+  background-color: #2196f3;
+  box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.08),
+    0px 2px 2px rgba(0, 0, 0, 0.12);
 }

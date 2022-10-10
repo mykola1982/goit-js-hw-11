@@ -3,6 +3,8 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { refs } from './js/refs';
 import { PixabayAPI } from './js/PixabayAPI';
 import { createMarkup } from './js/createMarkup';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 // const API_KEY = '30473634-1b924b529feef7019e04708d2';
 
@@ -38,6 +40,12 @@ function onSubmit(event) {
       const markup = createMarkup(hits);
       refs.galleryList.insertAdjacentHTML('beforeend', markup);
 
+      var gallery = new SimpleLightbox('.gallery a', {
+        captionDelay: 250,
+      });
+
+      // gallery.refresh();
+
       pixabay.calculateTotalPages(total);
 
       if (pixabay.isShowLoadMore) {
@@ -58,9 +66,16 @@ function onLoadMoreClik(event) {
 
   pixabay
     .getPhotos()
-    .then(({ hits }) => {
+    .then(({ hits, totalHits }) => {
       const markup = createMarkup(hits);
       refs.galleryList.insertAdjacentHTML('beforeend', markup);
+
+      var gallery = new SimpleLightbox('.gallery a', {
+        captionDelay: 250,
+      });
+      // gallery.refresh();
+
+      // Notify.info(`Hooray! We found ${totalHits} images.`);
     })
     .catch(error => {
       console.log(error);
