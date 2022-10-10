@@ -10,6 +10,10 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const pixabay = new PixabayAPI();
 
+var gallery = new SimpleLightbox('.gallery a', {
+  captionDelay: 250,
+});
+
 function onSubmit(event) {
   event.preventDefault();
 
@@ -40,11 +44,7 @@ function onSubmit(event) {
       const markup = createMarkup(hits);
       refs.galleryList.insertAdjacentHTML('beforeend', markup);
 
-      var gallery = new SimpleLightbox('.gallery a', {
-        captionDelay: 250,
-      });
-
-      // gallery.refresh();
+      gallery.refresh();
 
       pixabay.calculateTotalPages(total);
 
@@ -70,10 +70,7 @@ function onLoadMoreClik(event) {
       const markup = createMarkup(hits);
       refs.galleryList.insertAdjacentHTML('beforeend', markup);
 
-      var gallery = new SimpleLightbox('.gallery a', {
-        captionDelay: 250,
-      });
-      // gallery.refresh();
+      gallery.refresh();
 
       // Notify.info(`Hooray! We found ${totalHits} images.`);
     })
