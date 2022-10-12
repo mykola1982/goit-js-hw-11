@@ -130,3 +130,75 @@ button:focus {
   box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.08),
     0px 2px 2px rgba(0, 0, 0, 0.12);
 }
+
+
+
+
+
+@keyframes spinner-line-fade-more {
+
+  0%,
+  100% {
+    opacity: 0;
+    /* minimum opacity */
+  }
+
+  1% {
+    opacity: 1;
+  }
+}
+
+@keyframes spinner-line-fade-quick {
+
+  0%,
+  39%,
+  100% {
+    opacity: 0.25;
+    /* minimum opacity */
+  }
+
+  40% {
+    opacity: 1;
+  }
+}
+
+@keyframes spinner-line-fade-default {
+
+  0%,
+  100% {
+    opacity: 0.22;
+    /* minimum opacity */
+  }
+
+  1% {
+    opacity: 1;
+  }
+}
+
+@keyframes spinner-line-shrink {
+
+  0%,
+  25%,
+  100% {
+    /* minimum scale and opacity */
+    transform: scale(0.5);
+    opacity: 0.25;
+  }
+
+  26% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.backdrop {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(33, 150, 243, 0.2);
+  position: fixed;
+  top: 0;
+  transition: opacity 250ms var(--timing-function), visibility 250ms var(--timing-function);
+
+
+
+}
