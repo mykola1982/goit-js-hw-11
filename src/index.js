@@ -35,11 +35,11 @@ function onSubmit(event) {
   pixabay.query = query;
 
   clearPage();
+  spinnerPlay();
 
   pixabay
     .getPhotos()
     .then(({ hits, total }) => {
-      spinnerPlay();
       if (hits.length === 0) {
         Notify.info(
           'Sorry, there are no images matching your search query. Please try again.'
@@ -68,6 +68,7 @@ function onSubmit(event) {
 }
 
 function onLoadMoreClik(event) {
+  spinnerPlay();
   pixabay.incrementPage();
   if (!pixabay.isShowLoadMore) {
     refs.loadMoreBtn.classList.add('is-hidden');
@@ -76,7 +77,6 @@ function onLoadMoreClik(event) {
   pixabay
     .getPhotos()
     .then(({ hits, totalHits }) => {
-      spinnerPlay();
       const markup = createMarkup(hits);
       refs.galleryList.insertAdjacentHTML('beforeend', markup);
 
