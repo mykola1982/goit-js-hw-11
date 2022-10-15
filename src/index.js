@@ -9,17 +9,13 @@ import { PixabayAPI } from './js/PixabayAPI';
 import { createMarkup } from './js/createMarkup';
 import { spinnerPlay, spinnerStop } from './js/spinner';
 
-// const API_KEY = '30473634-1b924b529feef7019e04708d2';
-
-// добавити  спінер 37 хвилина 1 уроку
-
 const pixabay = new PixabayAPI();
 
 var gallery = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
 });
 
-function onSubmit(event) {
+async function onSubmit(event) {
   event.preventDefault();
 
   const {
@@ -35,62 +31,56 @@ function onSubmit(event) {
   pixabay.query = query;
 
   clearPage();
-  spinnerPlay();
 
-  pixabay
-    .getPhotos()
-    .then(({ hits, total }) => {
-      if (hits.length === 0) {
-        Notify.info(
-          'Sorry, there are no images matching your search query. Please try again.'
-        );
-        return;
-      }
+  try {
+    spinnerPlay();
+    const { hits, total, totalHits } = await pixabay.getPhotos();
+    if (hits.length === 0) {
+      Notify.success(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
+      return;
+    }
 
-      const markup = createMarkup(hits);
-      refs.galleryList.insertAdjacentHTML('beforeend', markup);
+    const markup = createMarkup(hits);
+    refs.galleryList.insertAdjacentHTML('beforeend', markup);
 
-      gallery.refresh();
+    gallery.refresh();
 
-      pixabay.calculateTotalPages(total);
+    Notify.info(`Hooray! We found ${totalHits} images.`);
+    pixabay.calculateTotalPages(total);
 
-      if (pixabay.isShowLoadMore) {
-        refs.loadMoreBtn.classList.remove('is-hidden');
-      }
-    })
-    .catch(error => {
-      console.log(error);
-      clearPage();
-    })
-    .finally(() => {
-      spinnerStop();
-    });
+    if (pixabay.isShowLoadMore) {
+      refs.loadMoreBtn.classList.remove('is-hidden');
+    }
+  } catch (error) {
+    console.log(error);
+    clearPage();
+  } finally {
+    spinnerStop();
+  }
 }
 
-function onLoadMoreClik(event) {
-  spinnerPlay();
+async function onLoadMoreClik(event) {
   pixabay.incrementPage();
   if (!pixabay.isShowLoadMore) {
     refs.loadMoreBtn.classList.add('is-hidden');
+    Notify.info("We're sorry, but you've reached the end of search results.");
   }
 
-  pixabay
-    .getPhotos()
-    .then(({ hits, totalHits }) => {
-      const markup = createMarkup(hits);
-      refs.galleryList.insertAdjacentHTML('beforeend', markup);
-
-      gallery.refresh();
-
-      // Notify.info(`Hooray! We found ${totalHits} images.`);
-    })
-    .catch(error => {
-      console.log(error);
-      clearPage();
-    })
-    .finally(() => {
-      spinnerStop();
-    });
+  try {
+    spinnerPlay();
+    const { hits } = await pixabay.getPhotos();
+    const markup = createMarkup(hits);
+    refs.galleryList.insertAdjacentHTML('beforeend', markup);
+    skrollPage();
+    gallery.refresh();
+  } catch (error) {
+    console.log(error);
+    clearPage();
+  } finally {
+    spinnerStop();
+  }
 }
 
 refs.searchForm.addEventListener('submit', onSubmit);
@@ -100,4 +90,15 @@ function clearPage() {
   pixabay.resetPage();
   refs.galleryList.innerHTML = '';
   refs.loadMoreBtn.classList.add('is-hidden');
+}
+
+function skrollPage() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 3,
+    behavior: 'smooth',
+  });
 }
