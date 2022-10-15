@@ -29,7 +29,10 @@ const callback = async function (entries, observer) {
         if (pixabay.isShowLoadMore) {
           const target = document.querySelector('.gallery a:last-child');
           io.observe(target);
-        }
+        } else
+          Notify.info(
+            "We're sorry, but you've reached the end of search results."
+          );
 
         skrollPage();
         gallery.refresh();
