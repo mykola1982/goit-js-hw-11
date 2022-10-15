@@ -98,7 +98,7 @@ function skrollPage() {
     .firstElementChild.getBoundingClientRect();
 
   window.scrollBy({
-    top: cardHeight * 3,
+    top: cardHeight * 12,
     behavior: 'smooth',
   });
 }
