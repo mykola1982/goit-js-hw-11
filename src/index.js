@@ -9,6 +9,41 @@ import { PixabayAPI } from './js/PixabayAPI';
 import { createMarkup } from './js/createMarkup';
 import { spinnerPlay, spinnerStop } from './js/spinner';
 
+const options = {
+  root: null,
+  rootMargin: '100px',
+  threshold: 1.0,
+};
+const callback = async function (entries, observer) {
+  entries.forEach(async entry => {
+    if (entry.isIntersecting) {
+      pixabay.incrementPage();
+      observer.unobserve(entry.target);
+
+      try {
+        spinnerPlay();
+        const { hits } = await pixabay.getPhotos();
+        const markup = createMarkup(hits);
+        refs.galleryList.insertAdjacentHTML('beforeend', markup);
+
+        if (pixabay.isShowLoadMore) {
+          const target = document.querySelector('.gallery a:last-child');
+          io.observe(target);
+        }
+
+        skrollPage();
+        gallery.refresh();
+      } catch (error) {
+        console.log(error);
+        clearPage();
+      } finally {
+        spinnerStop();
+      }
+    }
+  });
+};
+const io = new IntersectionObserver(callback, options);
+
 const pixabay = new PixabayAPI();
 
 var gallery = new SimpleLightbox('.gallery a', {
@@ -51,7 +86,10 @@ async function onSubmit(event) {
     pixabay.calculateTotalPages(total);
 
     if (pixabay.isShowLoadMore) {
-      refs.loadMoreBtn.classList.remove('is-hidden');
+      // refs.loadMoreBtn.classList.remove('is-hidden');
+
+      const target = document.querySelector('.gallery a:last-child');
+      io.observe(target);
     }
   } catch (error) {
     console.log(error);
@@ -98,7 +136,7 @@ function skrollPage() {
     .firstElementChild.getBoundingClientRect();
 
   window.scrollBy({
-    top: cardHeight * 12,
+    top: cardHeight * 2,
     behavior: 'smooth',
   });
 }
